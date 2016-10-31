@@ -39,6 +39,7 @@ services:
     - redis-server
 
 before_install:
+    - sudo apt-get update
     - stty cols 120
     - mkdir /tmp/slapd
     - slapd -f src/Symfony/Component/Ldap/Tests/Fixtures/conf/slapd.conf -h ldap://localhost:3389 &
