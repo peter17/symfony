@@ -32,10 +32,7 @@ matrix:
           env: deps=low
     fast_finish: true
 
-cache:
-    directories:
-        - .phpunit
-        - php-$MIN_PHP
+cache: false
 
 services:
     - mongodb
