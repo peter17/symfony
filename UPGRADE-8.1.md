@@ -59,6 +59,14 @@ HttpKernel
    ```
  * Deprecate passing a `ControllerArgumentsEvent` to the `ViewEvent` constructor; pass a `ControllerArgumentsMetadata` instead
 
+Messenger
+---------
+
+ * Serializers now return `Envelope<MessageDecodingFailedException>` on decode failure instead of throwing;
+   custom serializers that still throw are supported via a BC fallback in receivers
+ * Receivers no longer delete messages from the queue on decode failure;
+   they are routed through the normal retry/failure transport path instead
+
 Security
 --------
 
