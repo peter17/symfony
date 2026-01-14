@@ -44,6 +44,7 @@ HttpKernel
        // ...
    }
    ```
+ * Deprecate passing a `ControllerArgumentsEvent` to the `ViewEvent` constructor; pass a `ControllerArgumentsMetadata` instead
 
 Security
 --------
