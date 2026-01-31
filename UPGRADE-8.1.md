@@ -48,6 +48,8 @@ HttpKernel
 Security
 --------
 
+ * Add `getParentRoleNames()` method to `RoleHierarchyInterface`
+ * Make `RoleHierarchyInterface::getReachableRoleNames()` return roles as both keys and values
  * Deprecate `SameOriginCsrfTokenManager::onKernelResponse()`, `SameOriginCsrfTokenManager::clearCookies()` and `SameOriginCsrfTokenManager::persistStrategy()`; this logic is now handled automatically by `SameOriginCsrfListener`
 
 Serializer
