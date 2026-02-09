@@ -93,16 +93,12 @@ return (new PhpCsFixer\Config())
             ->append([__FILE__])
             ->notPath('#/Fixtures/#')
             ->exclude([
-                // explicit trigger_error tests
-                'Symfony/Bridge/PhpUnit/Tests/DeprecationErrorHandler/',
                 'Symfony/Component/Emoji/Resources/',
                 'Symfony/Component/Intl/Resources/data/',
             ])
             // Support for older PHPunit version
             ->notPath('#Symfony/Bridge/PhpUnit/.*Mock\.php#')
             ->notPath('#Symfony/Bridge/PhpUnit/.*Legacy#')
-            // disable to not apply `native_function_invocation` rule, as we explicitly break it for testability reason, ref https://github.com/symfony/symfony/pull/59195
-            ->notPath('Symfony/Component/Mailer/Transport/NativeTransportFactory.php')
             // auto-generated proxies
             ->notPath('#Symfony/Component/Cache/Traits/Re.*Proxy\.php#')
             // svg
@@ -110,5 +106,4 @@ return (new PhpCsFixer\Config())
             // HTML templates
             ->notPath('#Symfony/.*\.html\.php#')
     )
-    ->setCacheFile('.php-cs-fixer.cache')
 ;
