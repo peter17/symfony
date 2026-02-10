@@ -30,6 +30,11 @@ Form
  * Deprecate passing boolean as the second argument of `ValidatorExtension` and `FormTypeValidatorExtension`'s constructors; pass a `ViolationMapperInterface` instead
  * Add argument `$violationMapper` to `ValidatorExtensionTrait` and `TypeTestCase`'s `getExtensions()` methods
 
+Filesystem
+----------
+
+ * Deprecate calling `Filesystem::mirror()` with option `copy_on_windows`, use option `follow_symlinks` instead
+
 FrameworkBundle
 ---------------
 
