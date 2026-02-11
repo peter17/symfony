@@ -94,9 +94,9 @@ return (new PhpCsFixer\Config())
                     $relativePathname = $file->getRelativePathname();
 
                     if (
-                     str_contains($relativePathname, '/Tests/') // don't touch test files, as massive change with little benefit - as outside of public contract anyway
-                        || str_contains($relativePathname, '/Test/') // public namespace not following the rule, do not mistake it with `/Tests/`
-                        || str_starts_with($relativePathname, 'Symfony/Contracts/') // rule not yet followed in current MAJOR
+                        str_contains($relativePathname, '/Tests/') // don't touch test files, as massive change with little benefit - as outside of public contract anyway
+                           || str_contains($relativePathname, '/Test/') // public namespace not following the rule, do not mistake it with `/Tests/`
+                           || str_starts_with($relativePathname, 'Symfony/Contracts/') // rule not yet followed in current MAJOR
                     ) {
                         return false;
                     }
