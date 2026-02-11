@@ -47,7 +47,9 @@ return (new PhpCsFixer\Config())
         ],
         'declare_strict_types' => false, // part of PHP?x?Migration:risky, awaits https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/9384
         'php_unit_attributes' => true,
-        'void_return' => false, // part of PHP?x?Migration:risky, usage to be concluded
+        'void_return' => [
+            'fix_lambda' => false,
+        ],
     ])
     ->setRuleCustomisationPolicy(new class implements PhpCsFixer\Config\RuleCustomisationPolicyInterface {
         public function getPolicyVersionForCache(): string
@@ -81,6 +83,24 @@ return (new PhpCsFixer\Config())
                     }
 
                     // Keep the default configuration for other files
+                    return true;
+                },
+                'void_return' => static function (SplFileInfo $file) {
+                    // temporary hack due to bug: https://github.com/symfony/symfony/issues/62734
+                    if (!$file instanceof Symfony\Component\Finder\SplFileInfo) {
+                        return false;
+                    }
+
+                    $relativePathname = $file->getRelativePathname();
+
+                    if (
+                     str_contains($relativePathname, '/Tests/') // don't touch test files, as massive change with little benefit - as outside of public contract anyway
+                        || str_contains($relativePathname, '/Test/') // public namespace not following the rule, do not mistake it with `/Tests/`
+                        || str_starts_with($relativePathname, 'Symfony/Contracts/') // rule not yet followed in current MAJOR
+                    ) {
+                        return false;
+                    }
+
                     return true;
                 },
             ];
