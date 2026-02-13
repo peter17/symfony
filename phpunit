@@ -7,7 +7,7 @@ if (!file_exists(__DIR__.'/vendor/symfony/phpunit-bridge/bin/simple-phpunit')) {
 }
 if (!getenv('SYMFONY_PHPUNIT_VERSION')) {
     if (\PHP_VERSION_ID >= 80300) {
-        if (\PHP_VERSION_ID >= 80400) {
+        if (\PHP_VERSION_ID >= 80401) {
             putenv('SYMFONY_PHPUNIT_VERSION=13');
         } else {
             putenv('SYMFONY_PHPUNIT_VERSION=12');
