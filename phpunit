@@ -7,7 +7,11 @@ if (!file_exists(__DIR__.'/vendor/symfony/phpunit-bridge/bin/simple-phpunit')) {
 }
 if (!getenv('SYMFONY_PHPUNIT_VERSION')) {
     if (\PHP_VERSION_ID >= 80300) {
-        putenv('SYMFONY_PHPUNIT_VERSION=12');
+        if (\PHP_VERSION_ID >= 80400) {
+            putenv('SYMFONY_PHPUNIT_VERSION=13');
+        } else {
+            putenv('SYMFONY_PHPUNIT_VERSION=12');
+        }
 
         if (!in_array('--fail-on-phpunit-notice', $_SERVER['argv'], true) && !in_array('--do-not-fail-on-phpunit-notice', $_SERVER['argv'], true)) {
             $_SERVER['argv'][] = '--fail-on-phpunit-notice';
