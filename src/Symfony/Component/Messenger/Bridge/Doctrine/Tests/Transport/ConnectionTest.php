@@ -32,7 +32,6 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\NamedObject;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\SchemaConfig;
-use Doctrine\DBAL\Types\DateTimeType;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -816,10 +815,6 @@ class ConnectionTest extends TestCase
             }
         }
         $this->assertTrue($hasCoveringIndex, 'Expected covering index on [queue_name, available_at, delivered_at, id] not found');
-
-        $this->assertInstanceOf(DateTimeType::class, $table->getColumn('created_at')->getType());
-        $this->assertInstanceOf(DateTimeType::class, $table->getColumn('available_at')->getType());
-        $this->assertInstanceOf(DateTimeType::class, $table->getColumn('delivered_at')->getType());
     }
 
     public function testConfigureSchemaDifferentDbalConnection()

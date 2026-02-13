@@ -518,12 +518,11 @@ class Connection implements ResetInterface
         $table->addColumn('queue_name', Types::STRING)
             ->setLength(190) // MySQL 5.6 only supports 191 characters on an indexed column in utf8mb4 mode
             ->setNotnull(true);
-        // Keep schema types as mutable datetime to avoid perpetual MySQL diffs with DBAL 4+.
-        $table->addColumn('created_at', Types::DATETIME_MUTABLE)
+        $table->addColumn('created_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(true);
-        $table->addColumn('available_at', Types::DATETIME_MUTABLE)
+        $table->addColumn('available_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(true);
-        $table->addColumn('delivered_at', Types::DATETIME_MUTABLE)
+        $table->addColumn('delivered_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(false);
         if (class_exists(PrimaryKeyConstraint::class)) {
             $table->addPrimaryKeyConstraint(new PrimaryKeyConstraint(null, [new UnqualifiedName(Identifier::unquoted('id'))], true));
