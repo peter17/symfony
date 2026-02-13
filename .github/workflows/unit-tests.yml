@@ -243,7 +243,7 @@ jobs:
 
           mkdir -p /opt/php/lib
           echo memory_limit=-1 > /opt/php/lib/php.ini
-          ./phpunit install
+          SYMFONY_PHPUNIT_VERSION=12 ./phpunit install
           ./build/php/bin/php ./phpunit src/Symfony/Component/Process
 
       - name: Run PhpUnitBridge tests with PHPUnit 9.6
