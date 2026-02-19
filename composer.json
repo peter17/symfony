@@ -138,7 +138,7 @@
         "doctrine/orm": "^3.4",
         "dragonmantank/cron-expression": "^3.1",
         "egulias/email-validator": "^2.1.10|^3.1|^4",
-        "guzzlehttp/promises": "^1.4|^2.0",
+        "guzzlehttp/guzzle": "^7.10",
         "jolicode/jolinotif": "^2.7.2|^3.0",
         "jsonpath-standard/jsonpath-compliance-test-suite": "*",
         "league/html-to-markdown": "^5.0",
