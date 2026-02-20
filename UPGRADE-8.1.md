@@ -12,6 +12,7 @@ Console
 -------
 
  * [BC BREAK] Add `object` support to input options and arguments' default by changing the `$default` type to `mixed` in `InputArgument`, `InputOption`, `#[Argument]` and `#[Option]`
+ * Add optional `$format` argument to `SymfonyStyle::createProgressBar()`, `SymfonyStyle::progressStart()`, and `SymfonyStyle::progressIterate()` to allow passing a custom `ProgressBar` format string
 
 DependencyInjection
 -------------------
