@@ -50,6 +50,7 @@ foreach ($loader->getClassMap() as $class => $file) {
         case false !== strpos($file, '/src/Symfony/Component/Security/Http/Tests/Fixtures/IsGrantedAttributeWithClosureController.php'):
         case false !== strpos($file, '/src/Symfony/Component/Serializer/Tests/Fixtures/'):
         case false !== strpos($file, '/src/Symfony/Component/Serializer/Tests/Normalizer/Features/ObjectOuter.php'):
+        case false !== strpos($file, '/src/Symfony/Component/TypeInfo/Tests/Fixtures/'):
         case false !== strpos($file, '/src/Symfony/Component/Validator/Tests/Constraints/Fixtures/WhenTestWithClosure.php'):
         case false !== strpos($file, '/src/Symfony/Component/Validator/Tests/Fixtures/NestedAttribute/Entity.php'):
         case false !== strpos($file, '/src/Symfony/Component/VarDumper/Tests/Fixtures/NotLoadableClass.php'):
