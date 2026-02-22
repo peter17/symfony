@@ -26,7 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.php-version }}
-          ini-values: "memory_limit=-1"
+          ini-values: memory_limit=-1,intl.default_locale=en,intl.error_level=0
           coverage: none
 
       - name: Checkout target branch
