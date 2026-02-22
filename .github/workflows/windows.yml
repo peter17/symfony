@@ -76,6 +76,8 @@ jobs:
           "extension=php_pdo_sqlite.dll" >> php.ini-max
           "extension=php_curl.dll" >> php.ini-max
           "extension=php_sodium.dll" >> php.ini-max
+          "intl.default_locale=en" >> php.ini-max
+          "intl.error_level=0" >> php.ini-max
           Copy php.ini-max php.ini
           cd ${{ github.workspace }}
           iwr -outf composer.phar https://getcomposer.org/download/latest-stable/composer.phar
