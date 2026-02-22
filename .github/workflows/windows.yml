@@ -56,6 +56,8 @@ jobs:
           "extension=php_mbstring.dll" >> php.ini
           "extension=php_openssl.dll" >> php.ini
           "extension=php_curl.dll" >> php.ini
+          "intl.default_locale=en" >> php.ini
+          "intl.error_level=0" >> php.ini
           cd ${{ github.workspace }}
           iwr -outf composer.phar https://getcomposer.org/download/latest-stable/composer.phar
 
@@ -173,6 +175,8 @@ jobs:
           "extension=php_pdo_sqlite.dll" >> php.ini
           "extension=php_curl.dll" >> php.ini
           "extension=php_sodium.dll" >> php.ini
+          "intl.default_locale=en" >> php.ini
+          "intl.error_level=0" >> php.ini
           cd ${{ github.workspace }}
           iwr -outf composer.phar https://getcomposer.org/download/latest-stable/composer.phar
 
