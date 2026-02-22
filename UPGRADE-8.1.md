@@ -57,6 +57,12 @@ FrameworkBundle
  * Deprecate the `framework.http_cache.terminate_on_cache_hit` config option
  * Deprecate parameters `router.request_context.scheme` and `router.request_context.host`;
    use the `router.request_context.base_url` parameter or the `framework.router.default_uri` config option instead
+ * Deprecate setting `framework.http_client.default_options.caching.max_ttl` to `null`, use a positive integer instead
+
+HttpClient
+----------
+
+ * Deprecate passing `null` as `$maxTtl` to `CachingHttpClient`, pass a positive integer instead
 
 HttpFoundation
 --------------
