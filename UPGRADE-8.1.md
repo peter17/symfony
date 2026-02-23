@@ -58,6 +58,7 @@ FrameworkBundle
  * Deprecate parameters `router.request_context.scheme` and `router.request_context.host`;
    use the `router.request_context.base_url` parameter or the `framework.router.default_uri` config option instead
  * Deprecate setting `framework.http_client.default_options.caching.max_ttl` to `null`, use a positive integer instead
+ * Deprecate `senders` nesting level for messenger routing config; use string or a list of strings instead
 
 HttpClient
 ----------
