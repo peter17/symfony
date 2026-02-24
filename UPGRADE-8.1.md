@@ -34,6 +34,11 @@ DoctrineBridge
 
  * Deprecate setting an `$aliasMap` in `RegisterMappingsPass`. Namespace aliases are no longer supported in Doctrine.
 
+ErrorHandler
+------------
+
+ * Add argument `$deprecationsNamespacesMapping` to `DebugClassLoader::enable()` to configure namespace-to-vendor remapping for deprecation checks
+
 Form
 ----
 
