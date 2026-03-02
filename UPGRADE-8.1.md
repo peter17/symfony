@@ -52,6 +52,11 @@ FrameworkBundle
  * Deprecate parameters `router.request_context.scheme` and `router.request_context.host`;
    use the `router.request_context.base_url` parameter or the `framework.router.default_uri` config option instead
 
+HttpFoundation
+--------------
+
+ * Deprecate setting public properties of `Request` and `Response` objects directly; use setters or constructor arguments instead
+
 HttpKernel
 ----------
 
