@@ -49,6 +49,7 @@ FrameworkBundle
 ---------------
 
  * Deprecate setting the `framework.profiler.collect_serializer_data` config option
+ * Deprecate the `framework.http_cache.terminate_on_cache_hit` config option
  * Deprecate parameters `router.request_context.scheme` and `router.request_context.host`;
    use the `router.request_context.base_url` parameter or the `framework.router.default_uri` config option instead
 
