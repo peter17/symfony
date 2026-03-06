@@ -54,6 +54,7 @@ foreach ($loader->getClassMap() as $class => $file) {
         case false !== strpos($file, '/src/Symfony/Component/Validator/Tests/Constraints/Fixtures/WhenTestWithClosure.php'):
         case false !== strpos($file, '/src/Symfony/Component/Validator/Tests/Fixtures/NestedAttribute/Entity.php'):
         case false !== strpos($file, '/src/Symfony/Component/VarDumper/Tests/Fixtures/NotLoadableClass.php'):
+        case false !== strpos($file, '/src/Symfony/Component/VarExporter/DeepCloner'):
         case false !== strpos($file, '/src/Symfony/Component/VarExporter/Internal'):
         case false !== strpos($file, '/src/Symfony/Component/VarExporter/Tests/Fixtures/'):
         case false !== strpos($file, '/src/Symfony/Contracts/'):
