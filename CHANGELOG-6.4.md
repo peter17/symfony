@@ -7,6 +7,29 @@ in 6.4 minor versions.
 To get the diff for a specific change, go to https://github.com/symfony/symfony/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/symfony/symfony/compare/v6.4.0...v6.4.1
 
+* 6.4.35 (2026-03-06)
+
+ * bug #63604 [Console] Fix `ApplicationTester` ignoring `interactive` and `verbosity` options when `SHELL_VERBOSITY` is set (nicolas-grekas)
+ * bug #63602 [Serializer] Fix denormalization of magic `__set` properties (nicolas-grekas)
+ * bug #63603 [HttpFoundation] Fix session cookie_lifetime not applied in mock session storage (nicolas-grekas)
+ * bug #63598 [UrlSanitizer] Add 'sms' to hostless schemes (hivokas)
+ * bug #63592 [Cache] Add timeout and slot eviction to LockRegistry stampede prevention (nicolas-grekas)
+ * bug #63570 [Console] Fix OUTPUT_RAW corrupting binary content on Windows (guillaumeVDP)
+ * bug #63584 [Mime] Use shell_exec() instead of passthru() in FileBinaryMimeTypeGuesser (nicolas-grekas)
+ * bug #63574 [FrameworkBundle] Fix stale container after reboot in KernelTestCase (nicolas-grekas)
+ * bug #63572 [Form] Fix duplicate validation errors when ValidatorExtension is instantiated multiple times (nicolas-grekas)
+ * bug #63568 [TwigBridge] Fix Bootstrap 4 horizontal layout broken by form errors moved outside label (nicolas-grekas)
+ * bug #63555 [HttpKernel] Fix int-to-float coercion for JSON #[MapRequestPayload] with pre-parsed array data (eyupcanakman)
+ * bug #63559 [Messenger] Flush batch handlers after inactivity timeout when worker is busy (nicolas-grekas)
+ * bug #63523 [Mailer][Mailjet] Fix inline attachments with custom Content-ID (99Vicky)
+ * bug #63550 [RateLimiter] Prevent negative token from causing integer underflow (jhogervorst)
+ * bug #63526 [WebProfilerBundle] Fix Symfony web debug toolbar not being displayed (zoglo)
+ * bug #63500 [PhpUnitBridge] Consider PSR-0/PSR-4 fallback dirs when building paths (mpdude)
+ * bug #63533 [DebugBundle] gracefully handle the kernel.runtime_mode.web parameter missing (xabbuh)
+ * bug #63534 [Validator] Regex bypass when match is false with too big input (vincent4vx)
+ * bug #63496 [Dotenv] Defer variable and command expansion to account for overrides from subsequent .env files (nicolas-grekas)
+ * bug #63506 [DependencyInjection] Fix `TypeError` when using a custom container base class with typed `$parameterBag` (nicolas-grekas)
+
 * 6.4.34 (2026-02-26)
 
  * bug #63492 [RateLimiter] Fix retryAfter when consuming exactly all remaining tokens in FixedWindow and TokenBucket (ERuban)
