@@ -96,20 +96,24 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
     private bool $isInnerRequest = false;
 
     /**
-     * @param bool     $sharedCache Indicates whether this cache is shared or private. When true, responses
-     *                              may be skipped from caching in presence of certain headers
-     *                              (e.g. Authorization) unless explicitly marked as public.
-     * @param int|null $maxTtl      The maximum time-to-live (in seconds) for cached responses.
-     *                              If a server-provided TTL exceeds this value, it will be capped
-     *                              to this maximum.
+     * @param bool         $sharedCache Indicates whether this cache is shared or private. When true, responses
+     *                                  may be skipped from caching in presence of certain headers
+     *                                  (e.g. Authorization) unless explicitly marked as public.
+     * @param positive-int $maxTtl      The maximum time-to-live (in seconds) for cached responses.
+     *                                  If a server-provided TTL exceeds this value, it will be capped
+     *                                  to this maximum.
      */
     public function __construct(
         private HttpClientInterface $client,
         private readonly TagAwareCacheInterface $cache,
         array $defaultOptions = [],
         private readonly bool $sharedCache = true,
-        private readonly ?int $maxTtl = null,
+        private readonly ?int $maxTtl = 86400,
     ) {
+        if (null === $maxTtl) {
+            trigger_deprecation('symfony/http-client', '8.1', 'Passing null as "$maxTtl" to "%s()" is deprecated, pass a positive integer instead.', __METHOD__);
+        }
+
         if ($defaultOptions) {
             [, $this->defaultOptions] = self::prepareRequest(null, null, $defaultOptions, $this->defaultOptions);
         }
@@ -178,7 +182,7 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
         }
 
         // consistent expiration time for all items
-        $expiresAt = null === $this->maxTtl ? null : \DateTimeImmutable::createFromFormat('U', time() + $this->maxTtl);
+        $expiresAt = \DateTimeImmutable::createFromFormat('U', time() + ($this->maxTtl ?? 86400));
 
         $passthru = function (ChunkInterface $chunk, AsyncContext $context) use (
             $expiresAt,
@@ -227,11 +231,13 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
 
             if ($chunk->isFirst()) {
                 $statusCode = $context->getStatusCode();
-                $cacheControl = self::parseCacheControlHeader($headers['cache-control'] ?? []);
 
                 $attemptTag = self::generateChunkKey();
 
                 if (304 === $statusCode && null !== $freshness) {
+                    $headers = array_merge($cachedData['headers'], array_diff_key($headers, self::EXCLUDED_HEADERS));
+
+                    $cacheControl = self::parseCacheControlHeader($headers['cache-control'] ?? []);
                     $maxAge = $this->determineMaxAge($headers, $cacheControl);
 
                     $this->cache->get($metadataKey, static function (ItemInterface $item) use ($headers, $maxAge, $cachedData, $expiresAt, $fullUrlTag, $metadataKey): array {
@@ -239,8 +245,8 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
 
                         $cachedData['expires_at'] = self::calculateExpiresAt($maxAge);
                         $cachedData['stored_at'] = time();
-                        $cachedData['initial_age'] = (int) ($headers['age'][0] ?? 0);
-                        $cachedData['headers'] = array_merge($cachedData['headers'], array_diff_key($headers, self::EXCLUDED_HEADERS));
+                        $cachedData['initial_age'] = self::getCurrentAge($headers);
+                        $cachedData['headers'] = $headers;
 
                         return $cachedData;
                     }, \INF);
@@ -266,6 +272,8 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
                         return;
                     }
                 }
+
+                $cacheControl = self::parseCacheControlHeader($headers['cache-control'] ?? []);
 
                 if (!$this->isServerResponseCacheable($statusCode, $options['normalized_headers'], $headers, $cacheControl)) {
                     $context->passthru();
@@ -340,7 +348,7 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
                     return [
                         'status_code' => $context->getStatusCode(),
                         'headers' => array_diff_key($headers, self::EXCLUDED_HEADERS),
-                        'initial_age' => (int) ($headers['age'][0] ?? 0),
+                        'initial_age' => self::getCurrentAge($headers),
                         'stored_at' => time(),
                         'expires_at' => self::calculateExpiresAt($maxAge),
                         'next_chunk' => $firstChunkKey,

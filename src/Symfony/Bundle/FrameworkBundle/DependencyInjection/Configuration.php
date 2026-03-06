@@ -2204,9 +2204,17 @@ class Configuration implements ConfigurationInterface
                         ->defaultTrue()
                     ->end()
                     ->integerNode('max_ttl')
-                        ->info('The maximum TTL (in seconds) allowed for cached responses. Null means no cap.')
-                        ->defaultNull()
-                        ->min(0)
+                        ->info('The maximum TTL (in seconds) allowed for cached responses.')
+                        ->defaultValue(86400)
+                        ->min(1)
+                        ->beforeNormalization()
+                            ->ifNull()
+                            ->then(static function () {
+                                trigger_deprecation('symfony/framework-bundle', '8.1', 'Setting "framework.http_client.default_options.caching.max_ttl" to "null" is deprecated, use a positive integer instead.');
+
+                                return 86400;
+                            })
+                        ->end()
                     ->end()
                 ->end();
     }
