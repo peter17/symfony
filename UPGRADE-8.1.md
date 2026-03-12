@@ -94,6 +94,7 @@ Messenger
    custom serializers that still throw are supported via a BC fallback in receivers
  * Receivers no longer delete messages from the queue on decode failure;
    they are routed through the normal retry/failure transport path instead
+ * Add argument `$fetchSize` to `ReceiverInterface::get()` and `QueueReceiverInterface::getFromQueues()`
 
 Security
 --------
