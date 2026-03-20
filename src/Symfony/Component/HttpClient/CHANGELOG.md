@@ -9,6 +9,7 @@ CHANGELOG
  * Add `GuzzleHttpHandler` that allows using Symfony HttpClient as a Guzzle handler
  * Change `$maxTtl` argument of `CachingHttpClient` to default to `86400` (24h) instead of `null`
  * Deprecate passing `null` as `$maxTtl` to `CachingHttpClient`, pass a positive integer instead
+ * Add support for the `resolver` option (custom DNS resolver)
 
 8.0
 ---
