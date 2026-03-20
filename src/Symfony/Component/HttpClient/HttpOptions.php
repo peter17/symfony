@@ -190,6 +190,16 @@ class HttpOptions
     /**
      * @return $this
      */
+    public function setResolver(\Closure $resolver): static
+    {
+        $this->options['resolver'] = $resolver;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     public function setProxy(string $proxy): static
     {
         $this->options['proxy'] = $proxy;

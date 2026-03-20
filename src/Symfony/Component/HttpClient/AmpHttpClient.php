@@ -108,6 +108,10 @@ final class AmpHttpClient implements HttpClientInterface, LoggerAwareInterface, 
             $this->multi->dnsCache = $options['resolve'] + $this->multi->dnsCache;
         }
 
+        if (isset($options['resolver'])) {
+            $this->logger?->debug('AmpHttpClient always uses AmpResolver.');
+        }
+
         if ($options['peer_fingerprint'] && !isset($options['peer_fingerprint']['pin-sha256'])) {
             throw new TransportException(__CLASS__.' supports only "pin-sha256" fingerprints.');
         }

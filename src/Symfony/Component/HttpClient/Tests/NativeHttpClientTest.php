@@ -71,6 +71,25 @@ class NativeHttpClientTest extends HttpClientTestCase
         DnsMock::withMockedHosts([]);
     }
 
+    public function testResolverOption()
+    {
+        TestHttpServer::start(-8087);
+
+        $resolverCalled = false;
+        $resolver = function (string $host) use (&$resolverCalled): ?string {
+            $this->assertSame('symfony.com', $host);
+            $resolverCalled = true;
+
+            return '127.0.0.1';
+        };
+
+        $client = $this->getHttpClient(__FUNCTION__);
+        $response = $client->request('GET', 'http://symfony.com:8087/', ['resolver' => $resolver]);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($resolverCalled);
+    }
+
     public function testUnixSocket()
     {
         $this->markTestSkipped('NativeHttpClient doesn\'t support binding to unix sockets.');

@@ -171,6 +171,29 @@ class NoPrivateNetworkHttpClientTest extends TestCase
         $client->request('GET', $url, ['on_progress' => $customCallback]);
     }
 
+    public function testResolverOption()
+    {
+        $ipAddr = '104.26.14.6';
+        $url = 'http://example.com/';
+        $content = 'foo';
+
+        $resolverCalled = false;
+        $resolver = function (string $host) use (&$resolverCalled, $ipAddr): ?string {
+            $this->assertSame('example.com', $host);
+            $resolverCalled = true;
+
+            return $ipAddr;
+        };
+
+        $previousHttpClient = $this->getMockHttpClient($ipAddr, $content);
+        $client = new NoPrivateNetworkHttpClient($previousHttpClient);
+        $response = $client->request('GET', $url, ['resolver' => $resolver]);
+
+        $this->assertTrue($resolverCalled);
+        $this->assertEquals($content, $response->getContent());
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
     public function testHeadersArePassedOnRedirect()
     {
         $ipAddr = '104.26.14.6';

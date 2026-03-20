@@ -181,6 +181,13 @@ final class NoPrivateNetworkHttpClient implements HttpClientInterface, ResetInte
             return $dnsCache[$host];
         }
 
+        if (isset($options['resolver'])) {
+            $ip = $options['resolver']($host);
+            if (null !== $ip) {
+                return $options['resolve'][$host] = $dnsCache[$host] = $ip;
+            }
+        }
+
         if ((\FILTER_FLAG_IPV4 & $ipFlags) && $ip = gethostbynamel($host)) {
             return $options['resolve'][$host] = $dnsCache[$host] = $ip[0];
         }

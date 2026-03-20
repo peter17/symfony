@@ -130,6 +130,10 @@ trait HttpClientTrait
             throw new InvalidArgumentException(\sprintf('Option "on_progress" must be callable, "%s" given.', get_debug_type($onProgress)));
         }
 
+        if (isset($options['resolver']) && !$options['resolver'] instanceof \Closure) {
+            throw new InvalidArgumentException(\sprintf('Option "resolver" must be a Closure, "%s" given.', get_debug_type($options['resolver'])));
+        }
+
         if (\is_array($options['auth_basic'] ?? null)) {
             $count = \count($options['auth_basic']);
             if ($count <= 0 || $count > 2) {

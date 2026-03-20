@@ -262,8 +262,9 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
 
             $proxy = self::getProxy($options['proxy'], $url, $options['no_proxy']);
 
+            $resolverOptions = $options['resolver'] ?? null;
             if (!self::configureHeadersAndProxy($context, $host, $options['headers'], $proxy, 'https:' === $url['scheme'])) {
-                $ip = self::dnsResolve($host, $multi, $info, $onProgress);
+                $ip = self::dnsResolve($host, $multi, $info, $onProgress, $resolverOptions);
                 $url['authority'] = substr_replace($url['authority'], $ip, -\strlen($host) - \strlen($port), \strlen($host));
             }
 
@@ -328,7 +329,7 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
     /**
      * Resolves the IP of the host using the local DNS cache if possible.
      */
-    private static function dnsResolve(string $host, NativeClientState $multi, array &$info, ?\Closure $onProgress): string
+    private static function dnsResolve(string $host, NativeClientState $multi, array &$info, ?\Closure $onProgress, ?\Closure $resolver = null): string
     {
         $flag = '' !== $host && '[' === $host[0] && ']' === $host[-1] && str_contains($host, ':') ? \FILTER_FLAG_IPV6 : \FILTER_FLAG_IPV4;
         $ip = \FILTER_FLAG_IPV6 === $flag ? substr($host, 1, -1) : $host;
@@ -339,11 +340,19 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
         } elseif (null === $ip = $multi->dnsCache[$host] ?? null) {
             $info['debug'] .= "* Hostname was NOT found in DNS cache\n";
 
-            if ($ip = gethostbynamel($host)) {
-                $ip = $ip[0];
-            } elseif (!\defined('STREAM_PF_INET6')) {
-                throw new TransportException(\sprintf('Could not resolve host "%s".', $host));
-            } elseif ($ip = dns_get_record($host, \DNS_AAAA)) {
+            if (null !== $resolver) {
+                $ip = $resolver($host);
+                if (null !== $ip) {
+                    $info['debug'] .= "* Added {$host}:0:{$ip} to DNS cache via custom resolver\n";
+                }
+            }
+
+            if (null === $ip) {
+                if ($ip = gethostbynamel($host)) {
+                    $ip = $ip[0];
+                } elseif (!\defined('STREAM_PF_INET6')) {
+                    throw new TransportException(\sprintf('Could not resolve host "%s".', $host));
+                } elseif ($ip = dns_get_record($host, \DNS_AAAA)) {
                 $ip = $ip[0]['ipv6'];
             } elseif (\extension_loaded('sockets')) {
                 if (!$addrInfo = socket_addrinfo_lookup($host, 0, ['ai_socktype' => \SOCK_STREAM, 'ai_family' => \AF_INET6])) {
@@ -445,7 +454,8 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
             }
 
             if ($dnsResolve) {
-                $ip = self::dnsResolve($host, $multi, $info, $onProgress);
+                $resolverOptions = $options['resolver'] ?? null;
+                $ip = self::dnsResolve($host, $multi, $info, $onProgress, $resolverOptions);
                 $url['authority'] = substr_replace($url['authority'], $ip, -\strlen($host) - \strlen($port), \strlen($host));
             }
 

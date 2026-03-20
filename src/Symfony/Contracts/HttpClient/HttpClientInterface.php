@@ -63,6 +63,8 @@ interface HttpClientInterface
         'on_progress' => null,
         // string[] - a map of host to IP address that SHOULD replace DNS resolution
         'resolve' => [],
+        // \Closure(string $host): ?string - a custom DNS resolver
+        'resolver' => null,
         // string - by default, the proxy-related env vars handled by curl SHOULD be honored
         'proxy' => null,
         // string - a comma separated list of hosts that do not require a proxy to be reached

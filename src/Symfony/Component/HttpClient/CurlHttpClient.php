@@ -169,6 +169,13 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
             $curlopts[\CURLOPT_HEADEROPT] = \CURLHEADER_SEPARATE;
         }
 
+        if (isset($options['resolver'])) {
+            $ip = $options['resolver']($host);
+            if (null !== $ip) {
+                $options['resolve'] += [$host => $ip];
+            }
+        }
+
         // curl's resolve feature varies by host:port but ours varies by host only, let's handle this with our own DNS map
         if (isset($this->multi->dnsCache->hostnames[$host])) {
             $options['resolve'] += [$host => $this->multi->dnsCache->hostnames[$host]];
