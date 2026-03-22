@@ -262,9 +262,9 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
 
             $proxy = self::getProxy($options['proxy'], $url, $options['no_proxy']);
 
-            $resolverOptions = $options['resolver'] ?? null;
+            $resolverCallback = $options['resolver'] ?? null;
             if (!self::configureHeadersAndProxy($context, $host, $options['headers'], $proxy, 'https:' === $url['scheme'])) {
-                $ip = self::dnsResolve($host, $multi, $info, $onProgress, $resolverOptions);
+                $ip = self::dnsResolve($host, $multi, $info, $onProgress, $resolverCallback);
                 $url['authority'] = substr_replace($url['authority'], $ip, -\strlen($host) - \strlen($port), \strlen($host));
             }
 
@@ -353,21 +353,22 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
                 } elseif (!\defined('STREAM_PF_INET6')) {
                     throw new TransportException(\sprintf('Could not resolve host "%s".', $host));
                 } elseif ($ip = dns_get_record($host, \DNS_AAAA)) {
-                $ip = $ip[0]['ipv6'];
-            } elseif (\extension_loaded('sockets')) {
-                if (!$addrInfo = socket_addrinfo_lookup($host, 0, ['ai_socktype' => \SOCK_STREAM, 'ai_family' => \AF_INET6])) {
+                    $ip = $ip[0]['ipv6'];
+                } elseif (\extension_loaded('sockets')) {
+                    if (!$addrInfo = socket_addrinfo_lookup($host, 0, ['ai_socktype' => \SOCK_STREAM, 'ai_family' => \AF_INET6])) {
+                        throw new TransportException(\sprintf('Could not resolve host "%s".', $host));
+                    }
+
+                    $ip = socket_addrinfo_explain($addrInfo[0])['ai_addr']['sin6_addr'];
+                } elseif ('localhost' === $host || 'localhost.' === $host) {
+                    $ip = '::1';
+                } else {
                     throw new TransportException(\sprintf('Could not resolve host "%s".', $host));
                 }
-
-                $ip = socket_addrinfo_explain($addrInfo[0])['ai_addr']['sin6_addr'];
-            } elseif ('localhost' === $host || 'localhost.' === $host) {
-                $ip = '::1';
-            } else {
-                throw new TransportException(\sprintf('Could not resolve host "%s".', $host));
+                $info['debug'] .= "* Added {$host}:0:{$ip} to DNS cache\n";
             }
 
             $multi->dnsCache[$host] = $ip;
-            $info['debug'] .= "* Added {$host}:0:{$ip} to DNS cache\n";
         } else {
             $info['debug'] .= "* Hostname was found in DNS cache\n";
         }
@@ -454,8 +455,8 @@ final class NativeHttpClient implements HttpClientInterface, LoggerAwareInterfac
             }
 
             if ($dnsResolve) {
-                $resolverOptions = $options['resolver'] ?? null;
-                $ip = self::dnsResolve($host, $multi, $info, $onProgress, $resolverOptions);
+                $resolverCallback = $options['resolver'] ?? null;
+                $ip = self::dnsResolve($host, $multi, $info, $onProgress, $resolverCallback);
                 $url['authority'] = substr_replace($url['authority'], $ip, -\strlen($host) - \strlen($port), \strlen($host));
             }
 

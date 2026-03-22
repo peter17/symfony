@@ -73,7 +73,7 @@ class NativeHttpClientTest extends HttpClientTestCase
 
     public function testResolverOption()
     {
-        TestHttpServer::start(-8087);
+        TestHttpServer::start(8087);
 
         $resolverCalled = false;
         $resolver = function (string $host) use (&$resolverCalled): ?string {
