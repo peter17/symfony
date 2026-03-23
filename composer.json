@@ -141,6 +141,7 @@
         "guzzlehttp/guzzle": "^7.10",
         "jolicode/jolinotif": "^2.7.2|^3.0",
         "jsonpath-standard/jsonpath-compliance-test-suite": "*",
+        "nst/json-test-suite": "*",
         "league/html-to-markdown": "^5.0",
         "league/uri": "^6.5|^7.0",
         "masterminds/html5": "^2.7.2",
@@ -242,6 +243,18 @@
                     "type": "git",
                     "url": "https://github.com/jsonpath-standard/jsonpath-compliance-test-suite.git",
                     "reference": "b9d7153e58711ad38bb8e35ece69c13f4b2f7d63"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "nst/json-test-suite",
+                "version": "2024.12.14",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/nst/JSONTestSuite.git",
+                    "reference": "1ef36fa01286573e846ac449e8683f8833c5b26a"
                 }
             }
         },
