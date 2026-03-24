@@ -59,6 +59,7 @@ FrameworkBundle
    use the `router.request_context.base_url` parameter or the `framework.router.default_uri` config option instead
  * Deprecate setting `framework.http_client.default_options.caching.max_ttl` to `null`, use a positive integer instead
  * Deprecate `senders` nesting level for messenger routing config; use string or a list of strings instead
+ * Deprecate registering console commands by overriding `Bundle::registerCommands()`, use the `#[AsCommand]` attribute or the `console.command` service tag instead
 
 HttpClient
 ----------
@@ -86,6 +87,7 @@ HttpKernel
    }
    ```
  * Deprecate passing a `ControllerArgumentsEvent` to the `ViewEvent` constructor; pass a `ControllerArgumentsMetadata` instead
+ * Deprecate `Bundle::registerCommands()`, use the `#[AsCommand]` attribute or the `console.command` service tag instead of overriding this method
 
 Messenger
 ---------
