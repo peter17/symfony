@@ -22,7 +22,7 @@ class ResolverHttpClientTest extends TestCase
     public function testResolverIsCalledOnRequest()
     {
         $resolvedHosts = [];
-        $resolver = $this->createResolver(function (string $host) use (&$resolvedHosts): ?string {
+        $resolver = $this->createResolver(static function (string $host) use (&$resolvedHosts): ?string {
             $resolvedHosts[] = $host;
 
             return '1.2.3.4';
@@ -44,7 +44,7 @@ class ResolverHttpClientTest extends TestCase
 
     public function testResolverReturnsNullFallsBackToTransport()
     {
-        $resolver = $this->createResolver(fn (string $host): ?string => null);
+        $resolver = $this->createResolver(static fn (string $host): ?string => null);
 
         $mockClient = new MockHttpClient(function (string $method, string $url, array $options) {
             $this->assertArrayNotHasKey('example.com', $options['resolve'] ?? []);
@@ -61,7 +61,7 @@ class ResolverHttpClientTest extends TestCase
     public function testResolverIsCalledOnRedirect()
     {
         $resolvedHosts = [];
-        $resolver = $this->createResolver(function (string $host) use (&$resolvedHosts): ?string {
+        $resolver = $this->createResolver(static function (string $host) use (&$resolvedHosts): ?string {
             $resolvedHosts[] = $host;
 
             return '10.0.0.'.\count($resolvedHosts);
@@ -91,7 +91,7 @@ class ResolverHttpClientTest extends TestCase
     public function testResolverSkipsIpAddresses()
     {
         $resolverCalled = false;
-        $resolver = $this->createResolver(function (string $host) use (&$resolverCalled): ?string {
+        $resolver = $this->createResolver(static function (string $host) use (&$resolverCalled): ?string {
             $resolverCalled = true;
 
             return null;
@@ -108,7 +108,7 @@ class ResolverHttpClientTest extends TestCase
     public function testResolverDoesNotOverrideExplicitResolve()
     {
         $resolverCalled = false;
-        $resolver = $this->createResolver(function (string $host) use (&$resolverCalled): ?string {
+        $resolver = $this->createResolver(static function (string $host) use (&$resolverCalled): ?string {
             $resolverCalled = true;
 
             return '9.9.9.9';
